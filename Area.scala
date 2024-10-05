@@ -79,3 +79,94 @@ val throne = new Area(
   true,
   None
 )
+
+//Cavern
+val chasm = new Area(
+  "Echoing Chasm",
+  "A vast chamber where every sound echoes endlessly. The walls shimmer with crystals, distorting both light and sound.",
+  false,
+  None
+)
+
+val abyss = new Area(
+  "Luminous Abyss",
+  "A deep pit lit by faintly glowing crystals. The darkness feels alive.",
+  false,
+  Some(abyssPuzzle)
+)
+
+val grotto = new Area(
+  "Shattered Grotto",
+  "Fragments of broken crystals litter the ground, a place of forgotten despair.",
+  false,
+  Some(grottoPuzzle)
+)
+
+val hall = new Area(
+  "Prism Hall",
+  "Crystal pillars scatter light into endless, shifting hues, obscuring your way.",
+  false,
+  Some(hallPuzzle)
+)
+
+val vein = new Area(
+  "Frozen Vein",
+  "A freezing passage filled with cold, blue light. The ice cracks with each step.",
+  false,
+  Some(veinPuzzle)
+)
+
+val heart = new Area(
+  "The Heart of Glass",
+  "A room of sharp crystals reflecting light, hiding something dangerous.",
+  true,
+  None
+)
+
+
+//Forest
+val clearing = new Area(
+  "Timeless Clearing",
+  "A serene glade where time seems to stand still. The air is still, and the sky above looks frozen in perpetual dusk.",
+  false,
+  None
+)
+
+val grove = new Area(
+  "Duskbloom Grove",
+  "A thicket of trees with glowing, violet blossoms. Time flows strangely here, as if the flowers bloom and wither within moments.",
+  false,
+  Some(groovePuzzle)
+)
+
+val thicket = new Area(
+  "Whispering Thicket",
+  "The wind carries soft whispers through the gnarled trees.\n" +
+    "It's impossible to tell if the voices are warnings or merely echoes of the past.",
+  false,
+  Some(thicketPuzzle)
+)
+
+val glade = new Area(
+  "Fading Glade",
+  "A dying forest clearing where the grass turns gray and brittle. " +
+  "The landscape shifts between vibrant and withered, as if caught between seasons.",
+  false,
+  Some(gladePuzzle)
+)
+
+val spring = new Area(
+  "Eternal Spring",
+  "A bubbling spring with crystal-clear water, surrounded by ancient stones. " +
+  "The flow of the water seems to defy the passage of time.",
+  false,
+  Some(springPuzzle)
+)
+
+val hourglass = new Area(
+  "Broken Hourglass",
+  "A vast, eerie chamber surrounded by shattered timepieces. " +
+  "The ground is littered with broken clocks and glass, and an oppressive silence hangs in the air.",
+  true,
+  None
+)

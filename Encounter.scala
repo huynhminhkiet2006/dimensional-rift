@@ -1,35 +1,36 @@
 import scala.io.StdIn.readLine
-import scala.util.{Failure, Success, Try}
+import scala.util.*
 
-class Encounter(player: Player, enemy: Enemy) {
+class Encounter(player: Player, enemy: Enemy):
 
   val action = new GameAction
 
-  def start(): Boolean = {
+  def start(): Boolean =
     println(s"A level ${enemy.level} ${enemy.name} appears!")
     combatLoop()
-  }
 
-  private def combatLoop(): Boolean = {
-    while (player.HP > 0 && enemy.HP > 0) do {
+  private def combatLoop(): Boolean =
+    player.HP = player.currentHP
+    player.SP = player.currentSP
+    while (player.HP > 0 && enemy.HP > 0) do
       val playerActed = playerTurn()
-      if (playerActed && enemy.HP > 0) then {
+      if (playerActed && enemy.HP > 0) then
         enemyTurn()
+        println("Press Enter to continue...")
         readLine()
-      }
-    }
-    if (player.HP > 0) then {
-      println("You defeated the enemy!")
+
+    if (player.HP > 0) then
+      println("You defeated the enemy!\n")
+      println("Press Enter to see rewards...")
+      readLine()
       postCombat()
       player.updateHP(player.HP)
       player.updateSP(player.SP)
       true
-    }
-    else {
-      println("You were defeated... Game Over.")
+
+    else
+      println("You were defeated...")
       false
-    }
-  }
 
   private def playerTurn() =
 
@@ -110,7 +111,7 @@ class Encounter(player: Player, enemy: Enemy) {
             println("Invalid choice. Please choose a valid ability.")
             false
           else
-            val selectedItem = player.getItemByNumber(player.getItemUsableInBattle, choice - 1)
+            val selectedItem = player.getItemByNumber(player.getItemUsableInBattle, choice)
             selectedItem match
               case Some(item) =>
                 player.useItem(item)
@@ -141,35 +142,39 @@ class Encounter(player: Player, enemy: Enemy) {
         case "defend" =>
           enemy.defend()
 
-  private def postCombat(): Unit = {
+  private def postCombat(): Unit =
     
     player.gainXP(enemy.dropXP())
     val loot = enemy.dropLoot()
+
     for element <- loot do
-      element match {
+
+      element match
         case ability: Ability =>
           if (!player.abilityList.contains(ability)) then
             player.acquireAbility(ability)
-            println(s"You acquired a new ability: ${ability.name}!")
-            println(s"${ability.name}: ${ability.description}.")
+            println(s"\nYou acquired a new ability: ${ability.name}!")
+            println(s"${ability.name}: ${ability.description}.\n")
+            println("")
           else
-            println(s"You already have ${ability.name}.")
+            println(s"You already have ${ability.name}.\n")
 
         case weapon: Weapon =>
           if (!player.weaponList.contains(weapon)) then
             player.acquireWeapon(weapon)
-            println(s"You acquired a new weapon: ${weapon.name}!")
+            println(s"\nYou acquired a new weapon: ${weapon.name}!")
             weapon.displayStat()
+            println("")
           else
-            println(s"You already have ${weapon.name}.")
+            println(s"You already have ${weapon.name}.\n")
 
         case item: Item =>
           player.acquireItem(item)
           println(s"You acquired: ${item.name}.")
+          print(s"${item.name}: ")
+          item.description()
+
         case _ =>
           println("Unexpected loot type.")
-    }
 
-  }
-
-}
+    println("What will you do now?")

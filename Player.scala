@@ -25,11 +25,14 @@ class Player(
 
   def displayInventory(): Unit =
     println("\nWeapons:")
-    weaponList.foreach(println)
+    weaponList.foreach(weapon => println(s"- $weapon"))
     println("\nAbilities:")
-    abilityList.foreach(println)
-    println("\nItems:")
-    itemList.foreach(println)
+    abilityList.foreach(ability => println(s"- $ability"))
+    if getItem.isEmpty then
+      println("\nItems: None")
+    else
+      println("\nItems: ")
+      getItem.zipWithIndex.foreach { case ((item, count), index) => println(s"${index + 1}. ${item}: ${item.typee} x$count") }
 
   def displayCurrentLocation() =
     println(currentLocation)
@@ -66,9 +69,16 @@ class Player(
   def acquireItem(item: Item) =
     itemList += item
 
+  def removeItem(item: Item) =
+    itemList -= item
+
   def displayWeaponList() =
     for i <- weaponList.indices do
       println(s"${i + 1}: ${weaponList(i)}")
+
+  def displayAbilityList() =
+    for i <- abilityList.indices do
+      println(s"${i + 1}: ${abilityList(i)}")
 
   def switchWeapon(weapon: Weapon) =
     currentWeapon = weapon
@@ -92,7 +102,7 @@ class Player(
     attackPower += (2 + level - 2)
     defensePower += (2 + level - 2)
     println(s"Congratulations! You've reached Level $level!")
-    println(s"Your stats have improved: Max HP: $maxHP, Max SP: $maxSP, Attack: $attackPower, Defense: $defensePower")
+    println(s"Your stats have improved: Max HP: $maxHP, Max SP: $maxSP, Attack: $attackPower, Defense: $defensePower\n")
 
   def selfRecovery() =
     restoreHP()
@@ -100,15 +110,17 @@ class Player(
   def displayFullStat() =
     println(s"${name}: ")
     println(s"Basic stats: Level: $level, HP: $currentHP/$maxHP, SP: $currentSP/$maxSP, Attack: $attackPower, Defense: $defensePower")
-    println(s"Current weapon: $currentWeapon")
-    println("Inventory: ")
-    displayInventory()
+    println(s"Current weapon: $currentWeapon\n")
+    println(s"Current location: $currentLocation.")
+    println(s"Current area: $currentArea.\n")
     println("Unlocked locations and areas: ")
     for location <- unlockedLocation do
       println(s"${location.name}: ")
       for area <- location.areas do
-        println(s"${area.name} ")
+        println(s"- ${area.name} ")
       println("")
+    println("Inventory: ")
+    displayInventory()
 
   def useItem(item: Item) =
     if item.typee == "Recover HP" then
@@ -116,18 +128,41 @@ class Player(
       val recoveredHP = newHP - currentHP
       currentHP = newHP
       println(s"You use ${item.name} to recover ${recoveredHP} HP. Your current HP: $currentHP")
-      itemList -= item
+      removeItem(item)
     if item.typee == "Recover SP" then
       val newSP = min(maxSP, currentSP + item.power)
       val recoveredSP = newSP - currentSP
       currentSP = newSP
       println(s"You use ${item.name} and recover ${recoveredSP} SP. Your current SP: $currentSP")
-      itemList -= item
+      removeItem(item)
     if item.typee == "Special" then
       if item.name == "Healing I" then
+        val newHP = min(maxHP, currentHP + (maxHP * 40 / 100))
+        val recoveredHP = newHP - currentHP
+        currentHP = newHP
+        println(s"You use ${item.name} to recover ${recoveredHP} HP. Your current HP: $currentHP")
+        removeItem(item)
+      if item.name == "Healing II" then
+        val newHP = min(maxHP, currentHP + (maxHP * 60 / 100))
+        val recoveredHP = newHP - currentHP
+        currentHP = newHP
+        println(s"You use ${item.name} to recover ${recoveredHP} HP. Your current HP: $currentHP")
+        removeItem(item)
+      if item.name == "Healing III" then
         currentHP = maxHP
-        println(s"You use ${item.name} and fully recovers your HP!")
-        itemList -= item
+        println(s"You use ${item.name} and fully recovers your HP. Your current HP: $currentHP")
+        removeItem(item)
+
+
+  def getItem =
+    var itemMap = Map[Item, Int]()
+
+    for item <- itemList do
+      itemMap = itemMap.updatedWith(item):
+        case Some(count) => Some(count + 1)
+        case None => Some(1)
+
+    itemMap
 
   def getUsableItem =
     val usableItemList = mutable.Buffer[Item]()
@@ -143,7 +178,6 @@ class Player(
         case None => Some(1)
 
     usableItemMap
-
 
   def getItemUsableInBattle =
     val usableItemList = mutable.Buffer[Item]()

@@ -1,5 +1,6 @@
 abstract class Puzzle
 
+//Library
 class LibraryPuzzle(
             val question: String,
             val answerList: Vector[String],
@@ -57,4 +58,163 @@ val sanctumPuzzle = new LibraryPuzzle(
   ),
   Vector(1, 2, 3),
   sanctumKeyItem
+)
+
+//Cavern
+class CavernPuzzle(
+                  val question: String,
+                  val answerList: Vector[String],
+                  val correctAnswer: Int,
+                  val reward: Item) extends Puzzle:
+
+  var checkIfSolved = false
+
+  def displayPuzzle() =
+      println(question)
+      for i <- answerList.indices do
+        println(s"${i + 1}. ${answerList(i)}")
+      println("Enter the correct answer:")
+
+  def checkAnswer(input: Int) =
+    val correct = input == correctAnswer
+    if correct then checkIfSolved = true
+    correct
+
+
+val abyssPuzzle = new CavernPuzzle(
+  "The path is lit, but the light itself is in a trance. Which shadow follows the pulse of the truth?\n" +
+    "Hint: Reflection is more than an image.",
+  Vector(
+    "Shadow of Time",
+    "Shadow of Silence",
+    "Shadow of Reflection",
+  ),
+  3,
+  abyssFragment
+)
+
+val grottoPuzzle = new CavernPuzzle(
+  "A puzzle fragmented by time, yet bound by eternal threads. Which piece finds its true place?\n" +
+    "Hint: The past endures beyond time.",
+  Vector(
+    "Piece of Time",
+    "Piece of Eternity",
+    "Piece of Oblivion"
+  ),
+  2,
+  grottoFragment
+)
+
+val hallPuzzle = new CavernPuzzle(
+  "Which light splits the truth from its illusion?\n" +
+    "Hint: Clarity shines brightest in blue.",
+  Vector(
+    "Blue Beam",
+    "Red Beam",
+    "Green Beam"
+  ),
+  1,
+  hallFragment
+)
+
+val veinPuzzle = new CavernPuzzle(
+  "Where cold is no longer seen, what heat is left behind?\n" +
+    "Hint: Memory outlasts the chill.",
+  Vector(
+    "Heat of Ages",
+    "Heat of Fire",
+    "Heat of Memory"
+  ),
+  3,
+  veinFragment
+)
+
+class ForestPuzzle(
+                  val question: String,
+                  val answerList: Vector[String],
+                  val correctAnswer: Int,
+                  val reward: Item) extends Puzzle:
+
+  var checkIfSolved = false
+
+  def displayPuzzle() =
+      println(question)
+      for i <- answerList.indices do
+        println(s"${i + 1}. ${answerList(i)}")
+      println("Enter the correct answer:")
+
+  def checkAnswer(input: Int) =
+    val correct = input == correctAnswer
+    if correct then checkIfSolved = true
+    correct
+
+val groovePuzzle = new ForestPuzzle(
+  "You enter the Duskbloom Grove, where the fading light plays tricks on the eye.\n" +
+  "In the center of the grove, you see a girl standing between two mythical creatures, a lion and a unicorn.\n" +
+  "They speak to her, and their words echo in the twilight.\n\n" +
+  "The lion says, \"Yesterday, I was lying.\"\nThe unicorn adds, \"So was I.\"\n\n" +
+  "The creatures' nature is peculiar:\n\nThe lion lies on Monday, Tuesday, and Wednesday, but tells the truth on the other days.\n" +
+  "The unicorn lies on Thursday, Friday, and Saturday, but speaks the truth on the other days.\n" +
+  "The forest grows still, waiting for you to answer: What day is it?",
+  Vector(
+    "Monday",
+    "Tuesday",
+    "Thurday",
+    "Saturday"
+  ),
+  3,
+  grooveEssence
+)
+
+val thicketPuzzle = new ForestPuzzle(
+  "In the heart of the Whispering Thicket, a group of adventurers must cross a rickety wooden bridge at night.\n" +
+  "They only have one enchanted lantern that illuminates the path for only 15 minutes.\n" +
+  "To make the crossing, they must work together, but the whispers of the thicket often confuse them.\n" +
+  "\n\nCharacters:\n\nNina: Crosses the bridge in 1 minute.\nRufus: Crosses the bridge in 2 minutes.\nEleanor: Crosses the bridge in 5 minutes.\nGideon: Crosses the bridge in 8 minutes.\n" +
+  "The adventurers must cross the bridge with the lantern before the light goes out.\n" +
+  "They can only cross two at a time, and when they do, they must go at the pace of the slower individual.\n" +
+  "What is the shortest time possible for all of them to cross the bridge before the torch goes out?",
+  Vector(
+    "14 minutes",
+    "15 minutes",
+    "17 minutes",
+    "18 minutes"
+  ),
+  2,
+  thicketEssence
+)
+
+val springPuzzle = new ForestPuzzle(
+  "Four guardians named Naiad, Sylvan, Aether, and Thorn were competing in a friendly contest.\n " +
+    "However, one of them told a lie.\n\n" +
+    "Naiad said, \"The second guardian is Aether.\"\n" +
+    "Sylvan said, \"I am not Thorn!\"\n" +
+    "Aether said, \"Naiad? That is the fourth guardian.\"\n" +
+    "Thorn remained silent.\n" +
+    "Question: \"Which one of the guardians is Aether?\"",
+  Vector(
+    "The 1st one",
+    "The 2nd one",
+    "The 3rd one",
+    "The 4th one"
+  ),
+  3,
+  springEssence
+)
+
+val gladePuzzle = new ForestPuzzle(
+  "Among the whispers, five words do stay,\n" +
+    "RACECAR and MURDRUM dance in a play.\n" +
+    "SAGAS tell tales of time’s gentle tread,\n" +
+    "ATTACK rushes forth, leaving others in dread.\n\n" +
+    "But one word is different, it doesn’t belong,\n" +
+    "Can you find the fake in this wordy song?\n",
+  Vector(
+    "ATTACK",
+    "SAGAS",
+    "MURDUM",
+    "RACECAR"
+  ),
+  4,
+  gladeEssence
 )
