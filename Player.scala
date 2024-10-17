@@ -3,6 +3,9 @@ import scala.math.*
 
 class Player(
               var name: String,
+              val typee: String,
+              var weakness: String,
+              var hasEncounteredEnemy: Boolean,
               var maxHP: Int,
               var currentHP: Int,
               var maxSP: Int,
@@ -18,10 +21,10 @@ class Player(
               var currentLocation: Location,
               var currentArea: Area,
               var currentWeapon: Weapon,
-              var weaponList: mutable.Buffer[Weapon]) extends Character(name, maxHP, currentHP, currentSP, attackPower, defensePower, level, currentWeapon, abilityList):
+              var weaponList: mutable.Buffer[Weapon]) extends Character(name, typee, weakness, maxHP, currentHP, maxSP, currentSP, attackPower, defensePower, level, currentWeapon, abilityList):
 
   var choseToDefend = false
-  val baseXP = 100
+  val baseXP = 50
 
   def displayInventory(): Unit =
     println("\nWeapons:")
@@ -73,16 +76,18 @@ class Player(
     itemList -= item
 
   def displayWeaponList() =
-    for i <- weaponList.indices do
+    val sortedWeaponList = weaponList.sortBy(_.atkPower)
+    for i <- sortedWeaponList.indices do
       println(s"${i + 1}: ${weaponList(i)}")
 
   def displayAbilityList() =
+    val sortedAbilityList = abilityList.sortBy(_.abilityType)
     for i <- abilityList.indices do
       println(s"${i + 1}: ${abilityList(i)}")
 
   def switchWeapon(weapon: Weapon) =
     currentWeapon = weapon
-    println("You switched to " + currentWeapon)
+    println(s"You switched to $currentWeapon.")
 
   def xpToNextLevel: Int = baseXP * level * level
 
@@ -97,15 +102,16 @@ class Player(
 
   def levelUp() =
     level += 1
-    maxHP += (6 + level - 2)
-    maxSP += (3 + level - 2)
+    maxHP += (7 + level - 2)
+    maxSP += (5 + level - 2)
     attackPower += (2 + level - 2)
-    defensePower += (2 + level - 2)
+    defensePower += (level - 2)
     println(s"Congratulations! You've reached Level $level!")
     println(s"Your stats have improved: Max HP: $maxHP, Max SP: $maxSP, Attack: $attackPower, Defense: $defensePower\n")
 
   def selfRecovery() =
-    restoreHP()
+    currentHP = maxHP
+    currentSP = maxSP
 
   def displayFullStat() =
     println(s"${name}: ")
@@ -129,12 +135,14 @@ class Player(
       currentHP = newHP
       println(s"You use ${item.name} to recover ${recoveredHP} HP. Your current HP: $currentHP")
       removeItem(item)
+      this.HP = currentHP
     if item.typee == "Recover SP" then
       val newSP = min(maxSP, currentSP + item.power)
       val recoveredSP = newSP - currentSP
       currentSP = newSP
       println(s"You use ${item.name} and recover ${recoveredSP} SP. Your current SP: $currentSP")
       removeItem(item)
+      this.SP = currentSP
     if item.typee == "Special" then
       if item.name == "Healing I" then
         val newHP = min(maxHP, currentHP + (maxHP * 40 / 100))
@@ -142,27 +150,33 @@ class Player(
         currentHP = newHP
         println(s"You use ${item.name} to recover ${recoveredHP} HP. Your current HP: $currentHP")
         removeItem(item)
+        this.HP = currentHP
       if item.name == "Healing II" then
         val newHP = min(maxHP, currentHP + (maxHP * 60 / 100))
         val recoveredHP = newHP - currentHP
         currentHP = newHP
         println(s"You use ${item.name} to recover ${recoveredHP} HP. Your current HP: $currentHP")
         removeItem(item)
+        this.HP = currentHP
       if item.name == "Healing III" then
         currentHP = maxHP
         println(s"You use ${item.name} and fully recovers your HP. Your current HP: $currentHP")
         removeItem(item)
+        this.HP = currentHP
 
+
+  def sortedItemList = itemList.sortBy(_.typee)
 
   def getItem =
-    var itemMap = Map[Item, Int]()
 
-    for item <- itemList do
+    var itemMap = Map[Item, Int]()
+    for item <- sortedItemList do
       itemMap = itemMap.updatedWith(item):
         case Some(count) => Some(count + 1)
         case None => Some(1)
 
-    itemMap
+    
+    itemMap.toSeq.sortBy { case (item, _) => item.typee }.toMap
 
   def getUsableItem =
     val usableItemList = mutable.Buffer[Item]()
@@ -199,5 +213,10 @@ class Player(
     itemList.find { case (num, _, _) => num == number }.map { case (_, item, _) => item }
 
   def updateHP(amount: Int) = currentHP = amount
-
+  def updateMaxHP(amount: Int) = maxHP = amount
   def updateSP(amount: Int) = currentSP = amount
+  def updateMaxSP(amount: Int) = maxSP = amount
+  def updateAttack(amount: Int) = attackPower = amount
+  def updateDefense(amount: Int) = defensePower = amount
+  def updateWeapon(weapon: Weapon) = currentWeapon = weapon
+  def updateWeakness(value: String) = weakness = currentWeapon.weakness

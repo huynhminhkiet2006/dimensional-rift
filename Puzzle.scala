@@ -13,7 +13,7 @@ class LibraryPuzzle(
       println(question)
       for i <- answerList.indices do
         println(s"${i + 1}. ${answerList(i)}")
-      println("Enter the correct sequence of numbers separated by spaces (e.g., 1 3 2):")
+      println("\nEnter the correct sequence of numbers separated by spaces (e.g., 1 3 2):")
 
   def checkAnswer(playerInput: String) =
     val inputSequence = playerInput.split(" ").map(_.toInt).toVector
@@ -24,7 +24,7 @@ class LibraryPuzzle(
 val archivePuzzle = new LibraryPuzzle(
   "A story is told in whispers between the first breath and the final sigh. " +
     "\nWhat speaks first in the silence?\n" +
-    "\nHint: The start is not always the first step; endings may come before understanding.",
+    "\nHint: The start is not always the first step; endings may come before understanding.\n",
   Vector(
   "The Tome of Beginnings - Where all things rise, though not all things start.",
   "The Book of Silence - In the quiet before time stirs.",
@@ -37,7 +37,7 @@ val archivePuzzle = new LibraryPuzzle(
 val chamberPuzzle = new LibraryPuzzle(
   "Time coils around itself, memory unlocks what is forgotten, and only then can the past slip away. " +
     "\nWhich hand moves first?\n" +
-    "\nHint: What is held close must loosen before time flows, and only then may one leave.",
+    "\nHint: What is held close must loosen before time flows, and only then may one leave.\n",
   Vector(
     "The Locket of Memory - What is sealed must be freed.",
     "The Hourglass of Time - It turns, but only after something is set in motion.",
@@ -50,7 +50,7 @@ val chamberPuzzle = new LibraryPuzzle(
 val sanctumPuzzle = new LibraryPuzzle(
   " Echoes ripple through time, carried by voices unknown. Fear stirs before sorrow speaks, yet the final word remains unheard. " +
     "\nWhich voice fades last?\n" +
-    "\nHint: What is held close must loosen before time flows, and only then may one leave.",
+    "\nHint: What trembles comes first, though sorrow often lingers before all fades to quiet.\n",
   Vector(
     "The Whisper of Fear - That which trembles in the darkness.",
     "The Cry of Sorrow - A sound born of loss, it follows where fire once burned.",
@@ -73,7 +73,7 @@ class CavernPuzzle(
       println(question)
       for i <- answerList.indices do
         println(s"${i + 1}. ${answerList(i)}")
-      println("Enter the correct answer:")
+      println("\nEnter the correct answer:")
 
   def checkAnswer(input: Int) =
     val correct = input == correctAnswer
@@ -141,7 +141,7 @@ class ForestPuzzle(
       println(question)
       for i <- answerList.indices do
         println(s"${i + 1}. ${answerList(i)}")
-      println("Enter the correct answer:")
+      println("\nEnter the correct answer:")
 
   def checkAnswer(input: Int) =
     val correct = input == correctAnswer

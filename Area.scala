@@ -170,3 +170,11 @@ val hourglass = new Area(
   true,
   None
 )
+
+//Final boss
+val nexus = new Area(
+  "The Nexus of Reflection",
+  "",
+  true,
+  None
+)

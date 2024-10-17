@@ -1,9 +1,12 @@
-import javax.swing.JTextArea
 import scala.io.StdIn.*
 import scala.util.{Failure, Success, Try}
-import javax.swing.*
 
 class GameAction {
+
+  def pressEnter() =
+    println("\nPress Enter to continue...")
+    readLine()
+    println("")
 
   def getInputNumber(prompt: String, validChoices: Vector[Int]): Int =
 
@@ -31,6 +34,7 @@ class GameAction {
 
     var valid = false
     var choice = -1
+    print("Enter number: ")
 
     while (!valid) do
 
